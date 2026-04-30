@@ -4,8 +4,17 @@ version = "0.0.0"
 requires-python = ">=3.10"
 
 [build-system]
-requires = ["setuptools"]
+requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools]
-packages = ["common_metrics_on_video_quality"]
+# Discover all subpackages (fvd, fvd.styleganv, fvd.videogpt, fvd.tensorflow,
+# lpips, ...) automatically. Each subdirectory needs an __init__.py for
+# setuptools-find to pick it up — they're already present.
+[tool.setuptools.packages.find]
+include = ["common_metrics_on_video_quality*"]
+
+# Ship pre-trained model weights (i3d_torchscript.pt, i3d_pretrained_400.pt,
+# any other .pt/.pth/.npz that lives inside the package tree) as package
+# data so they're available after pip install.
+[tool.setuptools.package-data]
+"common_metrics_on_video_quality" = ["**/*.pt", "**/*.pth", "**/*.npz"]
